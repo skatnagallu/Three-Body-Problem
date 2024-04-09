@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "three-body-problem"
+version = "0.1.0"
+description = "three body problem based on random initial positions and velocities"
+authors = ["skatnagallu <s.katnagallu@mpie.de>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^1.26.4"
+panda3d = "^1.10.14"
+
+[tool.poetry.group.dev.dependencies]
+matplotlib = "^3.8.3"
+ipykernel = "^6.29.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
