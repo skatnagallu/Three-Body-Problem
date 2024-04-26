@@ -29,8 +29,8 @@ pip install panda3d numpy
 Clone the repository or download the source code:
 
 ```bash
-git clone https://github.com/skatnagallu/three_body_problem.git
-cd three_body_problem
+git clone [https://github.com/skatnagallu/three_body_problem.git](https://github.com/skatnagallu/Three-Body-Problem.git)
+cd Three-Body-Problem
 ```
 
 ## Usage
