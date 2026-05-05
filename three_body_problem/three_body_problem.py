@@ -30,20 +30,70 @@ class ThreeBodyApp(ShowBase):
         self.time_scale = 1.0
         
         self.orbits = {
-            'Figure-8': (0.347111, 0.532728),
-            'Butterfly I': (0.30689, 0.12551),
-            'Butterfly II': (0.39295, 0.09758),
-            'Bumblebee': (0.18428, 0.58719),
-            'Moth I': (0.46444, 0.39606),
-            'Moth II': (0.43917, 0.45297),
-            'Butterfly III': (0.40592, 0.23016),
-            'Moth III': (0.38344, 0.37736),
-            'Goggles': (0.08330, 0.12789),
-            'Butterfly IV': (0.350112, 0.07934),
-            'Dragonfly': (0.08058, 0.58884),
-            'Yarn': (0.55906, 0.34919),
-            'Yin-Yang I': (0.51394, 0.30474),
-            'Yin-Yang II': (0.41682, 0.33033)
+            "figure8": {
+                "positions": [ [-1, 0], [1, 0], [0, 0] ],
+                "velocities": [ [0.347111, 0.532728], [0.347111, 0.532728], [-0.694222, -1.065456] ]
+            },
+            "Broucke_A11": {
+                "positions": [ [0.0132604844, 0], [1.4157286016, 0], [-1.4289890859, 0] ],
+                "velocities": [ [0, 1.054151921], [0, -0.2101466639], [0, -0.8440052572] ]
+            },
+            "Broucke_R4": {
+                "positions": [ [0.8733047091, 0], [-0.6254030288, 0], [-0.2479016803, 0] ],
+                "velocities": [ [0, 1.0107764436], [0, -1.6833533458], [0, 0.6725769022] ]
+            },
+            "Dragonfly": {
+                "positions": [ [-1, 0], [1, 0], [0, 0] ],
+                "velocities": [ [0.080584, 0.588836], [0.080584, 0.588836], [-0.161168, -1.177672] ]
+            },
+            "Loop_end_triangles": {
+                "positions": [ [0.6661637520772179, -0.081921852656887], [-0.025192663684493022, 0.45444857588251897], [-0.10301329374224, -0.765806200083609] ],
+                "velocities": [ [0.84120297540307, 0.029746212757039], [0.142642469612081, -0.492315648524683], [-0.98384544501151, 0.462569435774018] ]
+            },
+            "Broucke_A1": {
+                "positions": [ [-0.9892620043, 0], [2.2096177241, 0], [-1.2203557197, 0] ],
+                "velocities": [ [0, 1.9169244185], [0, 0.1910268738], [0, -2.1079512924] ]
+            },
+            "two_ovals": {
+                "positions": [ [0.486657678894505, 0.755041888583519], [-0.681737994414464, 0.29366023319721], [-0.02259632746864, -0.612645601255358] ],
+                "velocities": [ [-0.182709864466916, 0.363013287999004], [-0.579074922540872, -0.748157481446087], [0.761784787007641, 0.385144193447218] ]
+            },
+            "butterfly_I": {
+                "positions": [ [-1, 0], [1, 0], [0, 0] ],
+                "velocities": [ [0.306893, 0.125507], [0.306893, 0.125507], [-0.613786, -0.251014] ]
+            },
+            "catface": {
+                "positions": [ [0.53638707339, 0.054088605008], [-0.252099126491, 0.694527327749], [-0.275706601688, -0.335933589318] ],
+                "velocities": [ [-0.569379585581, 1.255291102531], [0.079644615252, -0.458625997341], [0.489734970329, -0.796665105189] ]
+            },
+            "Broucke_A4": {
+                "positions": [ [0.2843198916, 0.0], [0.8736097872, 0.0], [-1.1579296788, 0.0] ],
+                "velocities": [ [0.0, 1.377417957], [0.0, -0.4884226932], [0.0, -0.8889952638] ]
+            },
+            "Broucke_R1": {
+                "positions": [ [0.808310623, 0.0], [-0.4954148566, 0.0], [-0.3128957664, 0.0] ],
+                "velocities": [ [0.0, 0.9901979166], [0.0, -2.7171431768], [0.0, 1.7269452602] ]
+            },
+            "IVa_2_A": {
+                "positions": [ [-1, 0], [1, 0], [0, 0] ],
+                "velocities": [ [0.464445, 0.39606], [0.464445, 0.39606], [-0.92889, -0.79212] ]
+            },
+            "Broucke_A13": {
+                "positions": [ [-0.8965015243, 0], [3.2352526189, 0], [-2.3387510946, 0] ],
+                "velocities": [ [0, 0.8285556923], [0, -0.0056478094], [0, -0.8229078829] ]
+            },
+            "Broucke_A10": {
+                "positions": [ [-0.5426216182, 0], [2.5274928067, 0], [-1.9848711885, 0] ],
+                "velocities": [ [0, 0.8750200467], [0, -0.0526955841], [0, -0.8223244626] ]
+            },
+            "googles": {
+                "positions": [ [-1, 0], [1, 0], [0, 0] ],
+                "velocities": [ [0.0833, 0.127889], [0.0833, 0.127889], [-0.1666, -0.255778] ]
+            },
+            "Broucke_A7": {
+                "positions": [ [-0.1095519101, 0], [1.6613533905, 0], [-1.5518014804, 0] ],
+                "velocities": [ [0, 0.9913358338], [0, -0.1569959746], [0, -0.8343398592] ]
+            }
         }
         
         self.filters = CommonFilters(self.win, self.cam)
@@ -64,7 +114,7 @@ class ThreeBodyApp(ShowBase):
         self.mode_menu = DirectOptionMenu(
             text="Stable Orbits",
             scale=0.06,
-            items=["Lagrange", "Figure-8", "Butterfly I", "Butterfly II", "Bumblebee", "Moth I", "Moth II", "Butterfly III", "Moth III", "Goggles", "Butterfly IV", "Dragonfly", "Yarn", "Yin-Yang I", "Yin-Yang II"],
+            items=["Lagrange", "figure8", "Broucke_A11", "Broucke_R4", "Dragonfly", "Loop_end_triangles", "Broucke_A1", "two_ovals", "butterfly_I", "catface", "Broucke_A4", "Broucke_R1", "IVa_2_A", "Broucke_A13", "Broucke_A10", "googles", "Broucke_A7"],
             initialitem=0,
             highlightColor=(0.65, 0.65, 0.65, 1),
             command=self.set_mode,
@@ -214,21 +264,16 @@ class ThreeBodyApp(ShowBase):
                 positions[3, :] += 10
                 
         elif self.mode in self.orbits:
-            vx, vy = self.orbits[self.mode]
+            o = self.orbits[self.mode]
             self.G = 1.0
             self.time_scale = 0.05
             self.masses = np.array([1.0, 1.0, 1.0])
             
-            positions = np.array([
-                [-1.0, 0.0, 0.0],
-                [1.0, 0.0, 0.0],
-                [0.0, 0.0, 0.0]
-            ])
-            velocities = np.array([
-                [vx, vy, 0.0],
-                [vx, vy, 0.0],
-                [-2*vx, -2*vy, 0.0]
-            ])
+            positions = np.array(o["positions"])
+            positions = np.hstack((positions, np.zeros((3, 1))))
+            
+            velocities = np.array(o["velocities"])
+            velocities = np.hstack((velocities, np.zeros((3, 1))))
             
             positions *= 2.0
             velocities /= np.sqrt(2.0)
