@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aesthetic N-Body Gravity Simulator in your browser. Features stable orbits like Figure-8 and Lagrange Triangles with stunning visual effects.">
+    <title>N-Body Gravity Simulator | Three-Body Problem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: #020204; 
+            font-family: 'Outfit', sans-serif; 
+            color: white;
+        }
+        #canvas-container { 
+            width: 100vw; 
+            height: 100vh; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            padding: 30px 40px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .controls {
+            padding: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            pointer-events: auto;
+        }
+
+        button {
+            background: rgba(20, 25, 35, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background: rgba(40, 50, 70, 0.8);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        button.active {
+            background: rgba(60, 100, 255, 0.3);
+            border: 1px solid rgba(100, 150, 255, 0.6);
+            color: white;
+            box-shadow: 0 0 20px rgba(60, 100, 255, 0.4);
+        }
+
+        .toggle-planet {
+            margin-left: 20px;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            border-radius: 0 8px 8px 0;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            letter-spacing: 4px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        .mode-select {
+            padding: 10px 20px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            outline: none;
+            font-family: 'Space Mono', monospace;
+            margin-right: 10px;
+        }
+        .mode-select option {
+            background: #111;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div id="ui-layer">
+        <header>
+            <h1>N-Body Gravity Simulator</h1>
+        </header>
+        <div id="loading">INITIALIZING UNIVERSE...</div>
+        <audio id="bgm" src="https://www.mfiles.co.uk/mp3-downloads/debussy-clair-de-lune.mp3" loop></audio>
+        <div class="controls">
+            <button id="btn-random" class="mode-btn active" data-mode="random">Random System</button>
+            <select id="stable-orbits" class="mode-select">
+                <option value="" disabled selected>-- Select Stable Orbit --</option>
+                <option value="figure8">Figure-8 Dance</option>
+                <option value="lagrange">Lagrange Triangle</option>
+                <option value="butterfly_I">Butterfly I</option>
+                <option value="butterfly_II">Butterfly II</option>
+                <option value="butterfly_III">Butterfly III</option>
+                <option value="butterfly_IV">Butterfly IV</option>
+                <option value="bumblebee">Bumblebee</option>
+                <option value="moth_I">Moth I</option>
+                <option value="moth_II">Moth II</option>
+                <option value="moth_III">Moth III</option>
+                <option value="goggles">Goggles</option>
+                <option value="dragonfly">Dragonfly</option>
+                <option value="yarn">Yarn</option>
+                <option value="yin_yang_I">Yin-Yang I</option>
+                <option value="yin_yang_II">Yin-Yang II</option>
+            </select>
+            <button id="btn-music" style="margin-left: 10px; border-left: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(100, 50, 150, 0.6);">🎵 Play Music</button>
+        </div>
+    </div>
+
+    <!-- Import Map for Three.js (No Node.js required) -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
